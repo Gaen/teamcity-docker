@@ -1,0 +1,22 @@
+version: '3'
+services:
+  server:
+    image: "jetbrains/teamcity-server"
+    volumes:
+      - server-data:/data/teamcity_server/datadir
+      - server-logs:/opt/teamcity/logs
+    ports:
+      - "8111:8111"
+  agent:
+    #image: "jetbrains/teamcity-minimal-agent"
+    build: ./agent
+    environment:
+      - SERVER_URL=server:8111
+      - AGENT_NAME=nodejs-agent
+    volumes:
+      - agent-config:/data/teamcity_agent/conf
+
+volumes:
+  server-data:
+  server-logs:
+  agent-config:
